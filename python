@@ -6,7 +6,7 @@ from snapshot_phantomjs import snapshot
 from docx import Document
 from docx.shared import Inches
 
-dfo = pd.read_csv("Web.csv")
+dfo = pd.read_csv(r"C:\Users\Sadu\Desktop\project\993.csv")
 #创建文档
 document = Document()
 #添加标题
@@ -21,11 +21,11 @@ document.add_paragraph(
     'web zhibiao 1', style='List Bullet'
 )
 #初始化图片：
-d1 = dfo.sort_values(by=['tmp1'],ascending=False).head(10)
+d1 = dfo.sort_values(by=['val'],ascending=False).head(10)
 c = (
     Bar()
-    .add_xaxis(list(d1["time"]))
-    .add_yaxis("tmp1", list(d1["tmp1"]))
+    .add_xaxis(list(d1["date"]))
+    .add_yaxis("val", list(d1["val"]))
 )
 #生成图片
 make_snapshot(snapshot, c.render(), "bar1.png",pixel_ratio = 1, is_remove_html = True)
@@ -33,15 +33,15 @@ make_snapshot(snapshot, c.render(), "bar1.png",pixel_ratio = 1, is_remove_html =
 document.add_picture('bar1.png', width=Inches(6))
 
 #添加表格
-t1 = document.add_table(1,2,style='Light List Accent 1')
+t1 = document.add_table(1,2,style='Medium Grid 1 Accent 1')
 
 hdr_cells = t1.rows[0].cells
-hdr_cells[0].text = 'time'
-hdr_cells[1].text = 'tmp1'
+hdr_cells[0].text = 'date'
+hdr_cells[1].text = 'val'
 for index, row in d1.iterrows():
     row_cells = t1.add_row().cells
-    row_cells[0].text = str(row["time"])
-    row_cells[1].text = str(row["tmp1"])
+    row_cells[0].text = str(row["date"])
+    row_cells[1].text = str(row["val"])
 
 document.add_page_break()
 document.save('test1.docx')
